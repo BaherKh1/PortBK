@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" font-family="Arial, Helvetica, sans-serif">
+  <rect width="1200" height="800" fill="#080b10"/>
+  <g opacity=".35" stroke="#1c2633" stroke-width="1">
+    <path d="M0 100h1200M0 200h1200M0 300h1200M0 400h1200M0 500h1200M0 600h1200M0 700h1200"/>
+    <path d="M100 0v800M200 0v800M300 0v800M400 0v800M500 0v800M600 0v800M700 0v800M800 0v800M900 0v800M1000 0v800M1100 0v800"/>
+  </g>
+  <circle cx="80" cy="70" r="16" fill="#b1ef4a"/>
+  <text x="108" y="78" font-size="26" font-weight="800" fill="#f4f7fc">relay</text>
+  <text x="1120" y="78" font-size="16" font-weight="700" fill="#8fa0b5" text-anchor="end">FOR BRANDS</text>
+
+  <text x="80" y="240" font-size="66" font-weight="800" fill="#f4f7fc" letter-spacing="-2">Video campaigns.</text>
+  <text x="80" y="315" font-size="66" font-weight="800" fill="#b1ef4a" letter-spacing="-2">Pay for views</text>
+  <text x="80" y="390" font-size="66" font-weight="800" fill="#b1ef4a" letter-spacing="-2">that land.</text>
+  <text x="80" y="445" font-size="22" fill="#a7b5c6">Write the brief once. Vetted clippers cut it up and post it.</text>
+  <text x="80" y="476" font-size="22" fill="#a7b5c6">You pay only for the views that arrive.</text>
+
+  <rect x="80" y="520" width="250" height="70" rx="35" fill="#b1ef4a"/>
+  <text x="205" y="564" font-size="21" font-weight="800" fill="#080b10" text-anchor="middle">Start a campaign</text>
+  <rect x="350" y="520" width="190" height="70" rx="35" fill="none" stroke="#425264" stroke-width="2"/>
+  <text x="445" y="564" font-size="21" font-weight="700" fill="#f4f7fc" text-anchor="middle">See rates</text>
+
+  <g transform="translate(790 180)">
+    <rect width="360" height="500" rx="24" fill="#0f141c" stroke="#243040" stroke-width="2"/>
+    <text x="30" y="54" font-size="15" font-weight="700" fill="#8fa0b5" letter-spacing="2">CAMPAIGN · LIVE</text>
+    <text x="30" y="100" font-size="26" font-weight="800" fill="#f4f7fc">Spring drop</text>
+    <rect x="30" y="128" width="300" height="10" rx="5" fill="#243040"/>
+    <rect x="30" y="128" width="222" height="10" rx="5" fill="#b1ef4a"/>
+    <text x="30" y="172" font-size="16" fill="#8fa0b5">74% of views goal</text>
+
+    <text x="30" y="238" font-size="15" font-weight="700" fill="#8fa0b5" letter-spacing="2">CLIPPERS</text>
+    <g>
+      <circle cx="50" cy="278" r="18" fill="#ff8338"/>
+      <rect x="80" y="266" width="120" height="10" rx="5" fill="#f4f7fc" opacity=".8"/>
+      <text x="300" y="282" font-size="16" fill="#b1ef4a" text-anchor="end">2.1M</text>
+    </g>
+    <g>
+      <circle cx="50" cy="326" r="18" fill="#5a7cff"/>
+      <rect x="80" y="314" width="96" height="10" rx="5" fill="#f4f7fc" opacity=".8"/>
+      <text x="300" y="330" font-size="16" fill="#b1ef4a" text-anchor="end">1.7M</text>
+    </g>
+    <g>
+      <circle cx="50" cy="374" r="18" fill="#b1ef4a"/>
+      <rect x="80" y="362" width="134" height="10" rx="5" fill="#f4f7fc" opacity=".8"/>
+      <text x="300" y="378" font-size="16" fill="#b1ef4a" text-anchor="end">980K</text>
+    </g>
+    <rect x="30" y="412" width="300" height="1" fill="#243040"/>
+    <text x="30" y="448" font-size="16" fill="#8fa0b5">Total views</text>
+    <text x="300" y="458" font-size="34" font-weight="800" fill="#f4f7fc" text-anchor="end">4.8M</text>
+  </g>
+</svg>

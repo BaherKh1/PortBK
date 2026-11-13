@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <rect width="1200" height="630" fill="#064cce"/>
+  <g font-family="Arial Black, Arial, sans-serif" font-weight="900" text-anchor="middle">
+    <text x="600" y="330" font-size="250" fill="#ff8338" letter-spacing="8">NADIA</text>
+    <text x="600" y="318" font-size="250" fill="#b1ef4a" letter-spacing="8">NADIA</text>
+    <text x="600" y="306" font-size="250" fill="#f4f7fc" letter-spacing="8">NADIA</text>
+  </g>
+  <text x="600" y="410" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="700" fill="#f4f7fc" text-anchor="middle">Product builder · Lisbon</text>
+  <text x="600" y="462" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#cbdcff" text-anchor="middle">I build the product, then the system that gets it used.</text>
+  <rect x="510" y="510" width="180" height="8" rx="4" fill="#b1ef4a"/>
+</svg>

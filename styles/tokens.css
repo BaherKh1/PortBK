@@ -1,0 +1,118 @@
+/* ============================================================
+   Design tokens — portfolio clone
+   Roles first. Values are the reference palette and can be
+   swapped in one place. No component should use raw hex.
+   ============================================================ */
+
+@font-face {
+  font-family: "Bowlby One";
+  src: url("../assets/fonts/bowlby-one-400.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("../assets/fonts/bricolage-grotesque-var.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 200 800;
+  font-stretch: 100%;
+  font-display: swap;
+}
+
+:root {
+  /* colour roles */
+  --color-bg: #f4f7fc;
+  --color-surface: #ffffff;
+  --color-surface-strong: #021239;
+  --color-surface-accent: #064cce;
+  --color-surface-accent-deep: #002472;
+  --color-border: #c9d4e8;
+  --color-border-input: #314262;
+  --color-text: #021239;
+  --color-text-muted: #314262;
+  --color-text-inverse: #f4f7fc;
+  --color-accent: #064cce;
+  --color-accent-deep: #002472;
+  --color-on-accent: #f4f7fc;
+  --color-highlight: #b1ef4a;
+  --color-highlight-bright: #befd5a;
+  --color-on-highlight: #021239;
+  --color-warm: #ff8338;
+  --color-on-warm: #021239;
+  --color-danger: #b3261e;
+  --color-success: #2e7d32;
+  --color-live: #46b427;
+  --color-focus: #f4f7fc;
+
+  /* type families */
+  --font-display: "Bowlby One", "Arial Black", sans-serif;
+  --font-sans: "Bricolage Grotesque", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* type scale */
+  --text-micro: 0.8125rem;   /* 13 */
+  --text-sm: 0.9375rem;      /* 15 */
+  --text-base: 1.0625rem;    /* 17 */
+  --text-lg: 1.25rem;        /* 20 */
+  --text-xl: 1.75rem;        /* 28 */
+  --text-2xl: 2.5rem;        /* 40 */
+  --text-3xl: 3.5rem;        /* 56 */
+  --text-display: 4.5rem;    /* 72 */
+
+  --leading-tight: 1;
+  --leading-snug: 1.15;
+  --leading-body: 1.55;
+  --leading-post: 1.7;
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-bold: 700;
+  --weight-black: 800;
+
+  /* spacing scale (4 / 8 base) */
+  --space-0: 0;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-7: 1.75rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+
+  /* layout */
+  --layout-gutter: clamp(1.25rem, 4vw, 4rem);
+  --layout-section: clamp(4.5rem, 10vw, 9rem);
+  --layout-measure: 60ch;
+  --layout-post-measure: 44rem;
+  --layout-nav-height: 4.5rem;
+
+  /* radius */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 1.5rem;
+  --radius-pill: 999px;
+
+  /* shadow */
+  --shadow-none: none;
+  --shadow-lift: 0 1px 2px rgba(2, 18, 57, 0.06), 0 8px 24px rgba(2, 18, 57, 0.08);
+
+  /* motion */
+  --motion-fast: 160ms;
+  --motion-base: 260ms;
+  --motion-slow: 700ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* z-index */
+  --z-raised: 2;
+  --z-nav: 50;
+}

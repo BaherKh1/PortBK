@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="/scripts/scroll-restore.js"></script>
+  <title>The feature I deleted and what it saved · Nadia Benali</title>
+  <meta name="description" content="A scheduling toggle nobody used was costing us a support queue, two cron jobs and a weekly argument.">
+  <link rel="canonical" href="https://nadia.studio/blog/delete-a-feature.html">
+  <meta name="theme-color" content="#064cce">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles/tokens.css">
+  <link rel="stylesheet" href="/styles/site.css">
+  <link rel="alternate" type="application/rss+xml" title="Nadia Benali · Blog" href="/blog/rss.xml">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="The feature I deleted and what it saved">
+  <meta property="og:description" content="A scheduling toggle nobody used was costing us a support queue, two cron jobs and a weekly argument.">
+  <meta property="og:url" content="https://nadia.studio/blog/delete-a-feature.html">
+  <meta property="og:image" content="https://nadia.studio/assets/og.png">
+  <meta property="article:published_time" content="2026-09-02">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://nadia.studio/assets/og.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "The feature I deleted and what it saved",
+    "datePublished": "2026-09-02",
+    "author": { "@type": "Person", "name": "Nadia Benali" },
+    "publisher": { "@type": "Person", "name": "Nadia Benali" },
+    "mainEntityOfPage": "https://nadia.studio/blog/delete-a-feature.html"
+  }
+  </script>
+</head>
+<body class="post-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-nav" data-nav data-raised="false" data-hidden="false">
+    <a class="nav-logo" href="/">NADIA</a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="/#products">Products</a>
+      <a href="/factory">Factory</a>
+      <a href="/#lab">Lab</a>
+      <a href="/#work">Work with me</a>
+      <a href="/blog/" aria-current="page">Blog</a>
+      <a href="/#content">Content</a>
+    </nav>
+    <a class="btn btn--lime" href="https://cal.com/" target="_blank" rel="noreferrer">Let's talk</a>
+  </header>
+
+  <main id="main">
+    <header class="post-head">
+      <a class="post-back" href="/blog/">← All posts</a>
+      <h1>The feature I deleted and what it saved</h1>
+      <p class="post-meta"><time datetime="2026-09-02">2 September 2026</time> · 3 min read</p>
+    </header>
+
+    <article class="post-body">
+      <p>Pollen had a scheduling toggle. It let a teacher mark Tuesday lessons as "auto-confirm" so students did not have to wait for a manual yes. It sounded useful. In eighteen months, 41 accounts turned it on, 12 kept it on, and 3 could explain what it did.</p>
+
+      <p>It also had a cron job that recalculated confirmations every fifteen minutes, a settings page with a warning nobody read, and a support macro that began "If your Tuesday lessons look wrong…". Once a week, someone in the team asked whether we should improve it. That question was the most expensive part.</p>
+
+      <h2>The audit that made the decision</h2>
+
+      <p>We looked at three things: usage, support tickets and engineering time. Usage was tiny. The tickets were not. Auto-confirm produced more confused messages per active account than any other setting, because it silently changed what a student saw on a day the teacher had already planned. And the code touched the booking flow, which meant every change to bookings required someone to remember the toggle existed.</p>
+
+      <p>The feature was not broken. It was doing exactly what we built. It was just solving a problem most teachers did not have, in a way that made the main flow harder to reason about.</p>
+
+      <h2>How we removed it without breaking trust</h2>
+
+      <ol>
+        <li><strong>We told the 41 accounts first.</strong> A short email, a date, and a one-click link to a manual approval flow that already existed.</li>
+        <li><strong>We kept the data.</strong> The setting stayed in the database, unread, so nobody lost a record of what they had chosen.</li>
+        <li><strong>We removed the UI and the cron job together.</strong> Half a removal is worse than none, because the hidden half keeps generating tickets.</li>
+        <li><strong>We wrote down why.</strong> A one-page note in the repo, linked from the old settings route, so the next person does not rebuild it by accident.</li>
+      </ol>
+
+      <p>Two accounts wrote back to complain. Both were using it for a workflow we had not imagined, and both were fine once we showed them the manual flow. Nobody churned. The support macro was deleted. The weekly argument stopped.</p>
+
+      <h2>What it saved</h2>
+
+      <p>The cron job was cheap in compute and expensive in attention. Every time bookings changed, someone had to check it. Removing it cut a branch out of the flow that had been tested less than the main path. Within a month, the booking screen was simpler to change, and two small improvements that had been stuck behind "but what about auto-confirm?" shipped.</p>
+
+      <p>The real saving was not the server cost. It was the end of a conversation we had been having every week for a year. Features do not only take code to build. They take code to keep, explain, support and defend. That cost does not appear on a roadmap, which is why it is so easy to add one more toggle.</p>
+
+      <h2>The rule I use now</h2>
+
+      <p>Before shipping a setting, I ask who will turn it on, who will turn it off, and who will answer the message when it behaves strangely. If I cannot name the third person, the setting is not ready. Sometimes the answer is that the feature should be the default instead. Sometimes it is that the feature should not exist.</p>
+
+      <p>Deleting is a product skill. It is also the cheapest performance work you can do.</p>
+
+      <p><a class="link-arrow" href="/#lab">See what I'm building now <span aria-hidden="true">→</span></a></p>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <span>© 2026 Nadia Benali</span>
+    <a href="/blog/">More posts</a>
+    <span>Lisbon, Portugal</span>
+  </footer>
+
+  <script src="/scripts/site.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+feature,area,priority,original,clone,notes
+Home page as one scrolling narrative,Layout,must,yes,yes,"Hero, ticker, products, factory strip, lab, services, logos, timeline, stack, channels, closing"
+Responsive layout 375-1440 px,Layout,must,yes,yes,"Breakpoints at 48rem, 50rem, 56rem, 60rem; nav links hidden below 50rem"
+Design tokens and type scale,Design,must,yes,yes,Cobalt/deep/ink/paper/lime/tangerine palette; Bowlby One + Bricolage Grotesque
+Fixed navigation with anchor links,Navigation,must,yes,yes,"Products, Factory, Lab, Work with me, Blog, Content + Let's talk"
+Giant MELEK wordmark with layered shadow,Hero,must,yes,yes,"Bowlby One, tangerine + lime + deep offset shadows, per-letter stagger"
+Hero avatar (looking up),Hero,must,yes,yes,Original artwork must be replaced; masked left/right edges
+Hero skill lists + intro + two CTAs,Hero,must,yes,yes,SHIP/GROW/AUTOMATE/REPEAT and PRODUCTS/AGENTS/CONTENT/GO-TO-MARKET
+Results marquee ticker,Hero,must,yes,yes,8 metrics duplicated; 42s loop; pauses on hover
+Two flagship product cards,Products,must,yes,yes,"Bakchich tangerine, Clip2Earn ink; role, body, screenshot, 3 facts, outbound link"
+Factory strip link,Products,must,yes,yes,Cast face stack + quiet/office copy + Visit the Factory
+Lab project list (10 rows),Lab,must,yes,yes,"Name, description, status, optional outbound/internal link"
+Lab status filters with live counts,Lab,must,yes,yes,All 10 / Live 2 / Building 4 / Open source 2 / Experiment 2; aria-pressed
+Three service cards,Services,must,yes,yes,"Build, Grow, Automate; lime Bowlby headings on cobalt"
+Client logo wall,Proof,must,yes,yes,10 tiles incl. Yours next? CTA; trademarks must be replaced
+Career timeline,Proof,must,yes,yes,"6 entries, cobalt years, top rules"
+Stack grid,Proof,must,yes,yes,"Product, Agents, Growth, Infra groups"
+Channels section,Content,must,yes,yes,"Blog, Instagram, LinkedIn, GitHub rows"
+Closing CTA block,Conversion,must,yes,yes,"LET'S BUILD wordmark, front avatar, deep-blue foot, two buttons"
+Footer,Layout,must,yes,yes,"Copyright, blog link, location"
+Accessibility basics,Quality,must,yes,yes,"Landmarks, labels, focus-visible, alt text, contrast, keyboard"
+SEO metadata and structured data,Quality,must,yes,yes,"Title, description, canonical, OG image, Person JSON-LD"
+Nav raised/hidden-on-scroll,Navigation,should,yes,yes,Ink background once scrolled; hides on scroll down; focus reveals
+Avatar idle motion,Hero,should,yes,yes,Original video must be replaced; subtle CSS/SVG loop
+Reduced-motion handling,Quality,should,yes,yes,Disable letter/ticker/avatar animation under prefers-reduced-motion
+Factory page,Factory,should,yes,yes,"Hero, quiet/live status, cast, 4 steps, CTA"
+Blog index,Blog,should,yes,yes,"Cobalt hero, post rows, read time"
+Blog post page,Blog,should,yes,yes,"Cobalt head, 44rem body measure, CTA"
+Hover micro-interactions,Interaction,should,yes,yes,"Arrow nudge, channel invert, chip/button press"
+404 page,Recovery,should,partial,yes,Not captured; reuse the shared shell
+RSS feed,Blog,should,yes,yes,/blog/rss.xml with autodiscovery link
+OG image and social card,Quality,should,yes,yes,Static image or generated from tokens
+Inline Cal.com booking,Conversion,could,yes,no,Original links out in a new tab; embed only if wanted
+Static office mock,Factory,could,no,yes,Quiet/live rooms rendered from local data instead of the live feed
+Image optimisation,Performance,could,yes,yes,"Responsive sizes, lazy loading below the fold"
+Page transitions,Polish,could,no,no,Optional view transitions
+Print styles,Polish,could,no,no,Optional readable print of the blog post
+Live office iframe/feed,Factory,skip,yes,no,External service office.bakchich.cc; not ours to clone
+Original 3D avatar and cast art,Assets,skip,yes,no,Owned artwork; build original replacements
+Original product screenshots,Assets,skip,yes,no,Shots of real products; build original mock UI
+Client logos and trademarks,Assets,skip,yes,no,"Orange, Decathlon, Microsoft, AWS, Cloudflare, etc.; replace"
+Melek personal copy and identity,Content,skip,yes,no,"Use the user's own name, story and projects unless permission is confirmed"
+Cal.com scheduling backend,Integration,skip,yes,no,Outbound link only
+CMS and analytics,Infra,skip,yes,no,"No public API; content is static, analytics not needed for the clone"
