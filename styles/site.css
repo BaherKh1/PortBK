@@ -621,6 +621,34 @@ button {
   --focus-ring: var(--color-text-inverse);
 }
 
+/* Third card: lime keeps the warm / ink / lime rhythm and holds navy
+   text at 14:1 contrast. */
+.flagship--lime {
+  background: var(--color-highlight);
+  color: var(--color-on-highlight);
+  --focus-ring: var(--color-on-highlight);
+}
+
+/* Repo + live demo links, same weight as the role line. */
+.flagship-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.5rem;
+  font-weight: var(--weight-bold);
+}
+
+.flagship-links a {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.22em;
+}
+
+@media (hover: hover) {
+  .flagship-links a:hover {
+    text-decoration-thickness: 3px;
+  }
+}
+
 .flagship h3 {
   font-family: var(--font-display);
   font-size: clamp(2.75rem, 9vw, 6rem);
@@ -738,6 +766,12 @@ button {
   --flow-outline: var(--color-text-inverse);
   --flow-outcome-bg: var(--color-text-inverse);
   --flow-outcome-text: var(--color-text);
+}
+
+/* The lime card labels its outcome in its own lime, the way the warm
+   card uses its orange, instead of inheriting the warm orange. */
+.flagship--lime .flow-pill {
+  --flow-outcome-text: var(--color-highlight);
 }
 
 .flow-pill__step {
