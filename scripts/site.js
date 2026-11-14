@@ -109,12 +109,15 @@ const MOTION = {
 
   const root = document.documentElement;
   const reduceQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const mobileQuery = window.matchMedia(`(max-width: ${MOTION.mobile.breakpoint}px)`);
   const clamp01 = (value) => Math.min(1, Math.max(0, value));
   const easeOut = (p) => 1 - Math.pow(1 - p, MOTION.columns.easePower);
   const toPx = (value) => `${value.toFixed(2)}px`;
 
   root.style.setProperty("--ticker-duration", `${MOTION.ticker.seconds}s`);
   root.style.setProperty("--nav-hide-y", `${MOTION.nav.hideY}%`);
+  root.style.setProperty("--hero-height", `${MOTION.mobile.heroHeight}svh`);
+  root.style.setProperty("--hero-min-height", `${MOTION.mobile.heroMinHeight}rem`);
 
   const nav = document.querySelector("[data-nav]");
   const hero = document.querySelector(".hero");
@@ -123,12 +126,16 @@ const MOTION = {
   const avatar = hero && hero.querySelector(".avatar");
   const wordmark = hero && hero.querySelector(".wordmark");
 
-  if (wordmark && MOTION.wordmark.speed !== 1) {
-    wordmark.style.willChange = "transform";
-  }
-
   const isReduced = () => reduceQuery.matches;
+  const isMobile = () => mobileQuery.matches;
   const isWide = () => window.innerWidth >= MOTION.columns.minWidth;
+
+  const syncWordmarkLayer = () => {
+    if (!wordmark) return;
+    const speed = isMobile() ? MOTION.mobile.wordmark.speed : MOTION.wordmark.speed;
+    wordmark.style.willChange = speed === 1 ? "" : "transform";
+  };
+  syncWordmarkLayer();
 
   const setStyle = (el, property, value) => {
     if (el && el.style[property] !== value) el.style[property] = value;
@@ -151,42 +158,110 @@ const MOTION = {
     clearedForReducedMotion = true;
   };
 
+  /* ---------- mobile hero: one layout read per resize, never per tick ---------- */
+  let mobilePull = 0;
+  let pendingMeasure = true;
+
+  const widestText = (col) => {
+    let widest = 0;
+    const range = document.createRange();
+    const rows = [...col.querySelectorAll("li")];
+    const previous = rows.map((li) => li.style.whiteSpace);
+    rows.forEach((li) => {
+      li.style.whiteSpace = "nowrap";
+    });
+    rows.forEach((li) => {
+      range.selectNodeContents(li);
+      for (const rect of range.getClientRects()) {
+        if (rect.width > widest) widest = rect.width;
+      }
+    });
+    rows.forEach((li, index) => {
+      li.style.whiteSpace = previous[index];
+    });
+    return widest;
+  };
+
+  const measureMobilePull = () => {
+    if (!isMobile() || !leftCol || !rightCol) {
+      mobilePull = 0;
+      return;
+    }
+
+    const prevLeft = leftCol.style.transform;
+    const prevRight = rightCol.style.transform;
+    leftCol.style.transform = "none";
+    rightCol.style.transform = "none";
+
+    const leftBox = leftCol.getBoundingClientRect();
+    const rightBox = rightCol.getBoundingClientRect();
+    const leftPad = parseFloat(getComputedStyle(leftCol).paddingLeft) || 0;
+    const rightPad = parseFloat(getComputedStyle(rightCol).paddingRight) || 0;
+    const naturalGap = (rightBox.right - rightPad - widestText(rightCol)) -
+      (leftBox.left + leftPad + widestText(leftCol));
+
+    leftCol.style.transform = prevLeft;
+    rightCol.style.transform = prevRight;
+
+    const pullLimit = (MOTION.mobile.columns.pullVw * window.innerWidth) / 100;
+    const gapLimit = (naturalGap - MOTION.mobile.columns.minGap) / 2;
+    mobilePull = Math.max(0, Math.min(pullLimit, Number.isFinite(gapLimit) ? gapLimit : pullLimit));
+  };
+
   const renderHero = (y) => {
     if (!hero) return;
 
-    const shiftProgress = easeOut(clamp01(y / MOTION.columns.distance));
-    const fadeProgress = clamp01(y / MOTION.columns.opacityDistance);
-    const shiftScale = isWide() ? 1 : 0;
+    const mobile = isMobile();
+    const C = MOTION.columns;
+    const MC = MOTION.mobile.columns;
+    const shiftProgress = easeOut(clamp01(y / (mobile ? MC.distance : C.distance)));
+    const fadeProgress = clamp01(y / (mobile ? MC.opacityDistance : C.opacityDistance));
+    const opacityFrom = mobile ? MC.opacityFrom : C.opacityFrom;
+    const opacityTo = mobile ? MC.opacityTo : C.opacityTo;
     const opacity = String(
-      MOTION.columns.opacityFrom +
-      (MOTION.columns.opacityTo - MOTION.columns.opacityFrom) * fadeProgress
+      opacityFrom + (opacityTo - opacityFrom) * fadeProgress
     );
 
-    setStyle(
-      leftCol,
-      "transform",
-      `translate3d(${toPx(MOTION.columns.leftX * shiftProgress * shiftScale)}, 0, 0)`
-    );
+    if (mobile) {
+      const pull = mobilePull * shiftProgress;
+      setStyle(leftCol, "transform", `translate3d(${toPx(pull)}, 0, 0)`);
+      setStyle(rightCol, "transform", `translate3d(${toPx(-pull)}, 0, 0)`);
+    } else {
+      const shiftScale = isWide() ? 1 : 0;
+      setStyle(
+        leftCol,
+        "transform",
+        `translate3d(${toPx(C.leftX * shiftProgress * shiftScale)}, 0, 0)`
+      );
+      setStyle(
+        rightCol,
+        "transform",
+        `translate3d(${toPx(C.rightX * shiftProgress * shiftScale)}, 0, 0)`
+      );
+    }
     setStyle(leftCol, "opacity", opacity);
-    setStyle(
-      rightCol,
-      "transform",
-      `translate3d(${toPx(MOTION.columns.rightX * shiftProgress * shiftScale)}, 0, 0)`
-    );
     setStyle(rightCol, "opacity", opacity);
 
     if (avatar) {
-      const scaleProgress = clamp01(y / MOTION.avatar.scaleDistance);
-      const liftProgress = clamp01(y / MOTION.avatar.liftDistance);
-      const scale = MOTION.avatar.scaleFrom +
-        (MOTION.avatar.scaleTo - MOTION.avatar.scaleFrom) * scaleProgress;
-      const lift = MOTION.avatar.lift * liftProgress;
-      setStyle(avatar, "transform", `translate3d(0, ${toPx(lift)}, 0) scale(${scale.toFixed(4)})`);
+      if (mobile) {
+        const A = MOTION.mobile.avatar;
+        const scale = MOTION.avatar.scaleFrom +
+          (A.scaleTo - MOTION.avatar.scaleFrom) * clamp01(y / A.distance);
+        setStyle(avatar, "transform", `scale(${scale.toFixed(4)})`);
+      } else {
+        const scaleProgress = clamp01(y / MOTION.avatar.scaleDistance);
+        const liftProgress = clamp01(y / MOTION.avatar.liftDistance);
+        const scale = MOTION.avatar.scaleFrom +
+          (MOTION.avatar.scaleTo - MOTION.avatar.scaleFrom) * scaleProgress;
+        const lift = MOTION.avatar.lift * liftProgress;
+        setStyle(avatar, "transform", `translate3d(0, ${toPx(lift)}, 0) scale(${scale.toFixed(4)})`);
+      }
     }
 
-    if (wordmark && MOTION.wordmark.speed !== 1) {
+    const wordmarkSpeed = mobile ? MOTION.mobile.wordmark.speed : MOTION.wordmark.speed;
+    if (wordmark && wordmarkSpeed !== 1) {
       // Slower than the page means a positive offset down the screen.
-      const drift = y * (1 - MOTION.wordmark.speed);
+      const drift = y * (1 - wordmarkSpeed);
       setStyle(wordmark, "transform", `translate3d(0, ${toPx(drift)}, 0)`);
     }
 
@@ -198,6 +273,11 @@ const MOTION = {
   let queued = false;
 
   const render = () => {
+    if (pendingMeasure) {
+      measureMobilePull();
+      pendingMeasure = false;
+    }
+
     const y = window.scrollY;
     const reduced = isReduced();
 
@@ -210,9 +290,10 @@ const MOTION = {
     }
 
     if (nav) {
-      setData(nav, "raised", String(y >= MOTION.nav.solidAt));
+      const navCfg = isMobile() ? MOTION.mobile.nav : MOTION.nav;
+      setData(nav, "raised", String(y >= navCfg.solidAt));
 
-      if (reduced || y <= MOTION.nav.hideAt) {
+      if (reduced || y <= navCfg.hideAt) {
         setData(nav, "hidden", "false");
       } else if (scrollingDown && !nav.contains(document.activeElement)) {
         setData(nav, "hidden", "true");
@@ -236,12 +317,35 @@ const MOTION = {
     window.requestAnimationFrame(render);
   };
 
+  const requestResize = () => {
+    pendingMeasure = true;
+    schedule();
+  };
+
+  const handleModeChange = () => {
+    syncWordmarkLayer();
+    if (!isMobile() && MOTION.wordmark.speed === 1) {
+      setStyle(wordmark, "transform", "");
+    }
+    pendingMeasure = true;
+    schedule();
+  };
+
   window.addEventListener("scroll", schedule, { passive: true });
-  window.addEventListener("resize", schedule, { passive: true });
+  window.addEventListener("resize", requestResize, { passive: true });
+  window.addEventListener("orientationchange", requestResize, { passive: true });
   if (typeof reduceQuery.addEventListener === "function") {
     reduceQuery.addEventListener("change", schedule);
   } else if (typeof reduceQuery.addListener === "function") {
     reduceQuery.addListener(schedule);
+  }
+  if (typeof mobileQuery.addEventListener === "function") {
+    mobileQuery.addEventListener("change", handleModeChange);
+  } else if (typeof mobileQuery.addListener === "function") {
+    mobileQuery.addListener(handleModeChange);
+  }
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(requestResize);
   }
 
   if (nav) {

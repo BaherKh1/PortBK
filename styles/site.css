@@ -531,6 +531,9 @@ button {
 
   .hero-col {
     padding: 1.75rem 20px 0;
+    /* Slightly under the site-wide 6vw so the two longest rows
+       ("JENKINS CI/CD", "AGILE / SCRUM") never wrap at 360px. */
+    font-size: clamp(1rem, 5.2vw, 2rem);
   }
 
   .hero-foot {

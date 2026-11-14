@@ -140,3 +140,34 @@ Fixes made during QA:
 - `/#projects` deep link jumps to 881 px; reloading that URL returns to 0. A `#skills` click still scrolls to 4849 px.
 - Normal navigation to `/factory/` opens at 0 with `scrollRestoration` left on `auto`. Back from `/blog/` to `/factory/` restores 400 px, as before.
 - `scroll-restore.js` present on home, Factory, blog index, a post and 404. No console errors.
+
+## 2026-11-14 - mobile hero rebuilt to the reference
+
+**Goal.** Make the hero below 769 px match the reference mobile composition and scroll motion, without touching copy, colours, fonts, the portrait or the desktop hero.
+
+**Layout (`styles/site.css`, `@media (max-width: 48rem)`).**
+
+- One blue stage plus two navy rows: grid areas `stage / left right / foot`, with `--hero-stage: max(65svh, min(44rem, 100vw))`. The 44rem floor keeps the head, yellow tag and shoulder crop composed on wide-but-short viewports; on phones the stage is exactly 65svh.
+- Wordmark absolutely placed at `max(4.75rem, 12% of the stage)`, `font-size: 23.3vw`. Measured ink width is 88.0% at 360, 390, 430 and 768 px, with the orange/green/navy extrusion unchanged.
+- Avatar: 80vw wide (capped at 34rem), `top: 21%`, `height: 79%`, so its bottom is exactly the stage bottom. `object-fit: cover` / `object-position: 50% 0` crops the portrait to head and shoulders, removes the old side fade and keeps the yellow tag. `transform-origin: bottom center`, z-index 2 above the wordmark, `overflow: hidden` on the hero clips the zoom. The entry animation is fade-only so the shoulders never lift off the navy edge.
+- Navy panel is `.hero::after` at `grid-area: 2 / 1 / 4 / 3`, starting on the exact stage boundary. Columns and foot use 20px side padding, left/right alignment and weight unchanged.
+- Mobile column type is `clamp(1rem, 5.2vw, 2rem)`. At the old 6vw the longest rows ("JENKINS CI/CD", "AGILE / SCRUM") wrapped on 360 and 390; the new size is within 2% of the reference's 20.67px at 390 and keeps every row on one line.
+
+**Motion (`scripts/site.js`).**
+
+- New `MOTION.mobile` block holds the breakpoint (768), stage height (65svh), floor (44rem), column pull (5vw), minimum gap (16px), ranges (400/300), avatar scale (1.06) and range (300), wordmark speed (0.8) and nav thresholds (80/160).
+- `matchMedia("(max-width: 768px)")` selects the mode. Resize, orientation change, the media-query change and `document.fonts.ready` mark the pull for re-measure; the render loop re-measures once, not per scroll tick. Measurement temporarily clears the inline column transforms, measures the widest unwrapped text in each column with a `Range`, and caps the pull at `min(5vw, (naturalGap - 16) / 2)`.
+- Columns translate inward by equal and opposite amounts, ease-out over 400 px; opacity goes 0.5 to 1 over 300 px; font size is untouched by scroll. The optional 40 ms row stagger was skipped so no per-row style is written each frame.
+- Avatar scales 1 to 1.06 over 300 px from the bottom centre; the wordmark drifts at 0.8x; the nav turns solid at 80 px and hides past 160 px, returning on scroll up. Desktop keeps 100/200 and its original values.
+- Only `transform` and `opacity` are animated, `will-change: transform` is set on the moving layers, and the wordmark layer hint is toggled with the mode. Reduced motion still uses `clearHero()` plus the CSS overrides: no transforms, side words at opacity 1.
+- Contrast: `#f4f7fc` at 0.5 opacity over `#002472` is about 4.27:1, which passes AA for the bold large text of the columns, so 0.5 is kept.
+
+**QA.**
+
+- 61 headless Chrome CDP assertions pass at 360 x 780, 390 x 844, 430 x 932 and 768 x 1024.
+- No horizontal overflow at any width. Avatar bottom equals the navy row top to within 0.5 px; mask is `none`; the avatar overlaps the wordmark bottom at every width.
+- Stage: 507, 548.6, 605.8 and 704 px (65svh at the phone widths, the 44rem floor at 768). First side row: 535, 576.6, 633.8, 732 px, all above the fold. Widest-row gap: 66.8, 76, 89 and 303.3 px.
+- At 390 px: column translates 0 -> 19.2 px at 300 -> 19.5 px at 400 (5vw cap), mirrored, gap still 37 px; opacity 0.5 -> 1 by 300; avatar 312 -> 330.8 px with the bottom flush; wordmark moves 240 px when the page moves 300; nav states `false/false -> true/false` at 90 -> `true/true` at 250 -> `true/false` after scrolling up.
+- Reduced motion: columns `opacity: 1`, all four animated layers `transform: none`.
+- Live 390 -> 1024 -> 768 resize switches avatar origin and re-measures the gap. Desktop 960, 1024 and 1440 keep the block hero, absolute wordmark/columns, top-centre avatar, mask and `object-fit: contain`.
+- Screenshots at all four widths plus 390 and 360 at scrollY 300 confirm the navy panel starts flush, the side rows are one line, and the scroll state stays clipped.

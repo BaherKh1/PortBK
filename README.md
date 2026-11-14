@@ -40,7 +40,7 @@ There is no install step and nothing to compile.
 │   ├── tokens.css                 Colour, type, spacing, motion tokens, @font-face
 │   └── site.css                   Components and responsive rules
 ├── scripts/
-│   ├── site.js                    Hero + project-card motion, nav state, Lab filtering
+│   ├── site.js                    Hero motion (desktop + mobile), nav state, Lab filtering
 │   └── scroll-restore.js          Forces reloads to open at the top
 ├── assets/
 │   ├── avatar-up.svg              Hero portrait
@@ -97,9 +97,10 @@ To rebrand, change the tokens first. Then update the SVGs in `assets/` that use 
 
 - Skip link, landmarks, one `h1` per page, visible focus rings.
 - The hero is scroll-linked: side columns slide inward and fade in, the avatar scales and lifts, and the wordmark has a configurable parallax speed. All values live in `MOTION` at the top of `scripts/site.js`.
+- On mobile (viewport up to 768 px) the hero becomes a 65svh blue stage: the wordmark spans about 88% of the width, the portrait is about 80vw across the shoulders and sits flush on the navy panel, and the side words slide inward with the pull capped so the widest rows keep at least 16 px between them. The avatar zoom is anchored at bottom centre, the wordmark drifts at 0.8x, and nothing reads layout during scroll. All mobile tunables live in `MOTION.mobile`; the matching CSS media query is `48rem` (768 px).
 - Project cards pop in once when their top crosses 85% of the viewport: opacity, a 60 px rise, 0.92 scale and 2deg rotation settle on a back-out curve, with a 90 ms stagger per batch (capped at 400 ms). The heading leads by 100 ms. Screenshot, text and facts animate inside the card, and hover lift only unlocks once the entrance has settled. An inline head script sets `js-motion` before first paint, so cards are hidden without a flash but remain visible if JavaScript never runs. All timings are in `MOTION.projects`; hidden cards stay in the accessibility tree and tab order.
 - Lab filters are real buttons with `aria-pressed`; results are announced through a polite live region. Filtering is an enhancement — all rows are visible without JavaScript.
-- The fixed nav turns solid at 100 px, hides after 200 px while scrolling down, and returns on scroll up. It stays put while focused.
+- The fixed nav turns solid at 100 px on desktop (80 px on mobile), hides after 200 px (160 px on mobile) while scrolling down, and returns on scroll up. It stays put while focused.
 - `prefers-reduced-motion: reduce` disables the scroll-linked transforms and the ticker, and shows the hero in its final readable state.
 - A reload always opens at the top: `scripts/scroll-restore.js` sets `history.scrollRestoration = "manual"` before load and re-scrolls to `0` if the browser restores late. Normal navigations, deep links with a hash, in-page anchors and back/forward are left alone.
 - Images carry explicit dimensions to avoid layout shift; decorative art is `aria-hidden` or has empty `alt`.
