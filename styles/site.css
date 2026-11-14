@@ -501,20 +501,22 @@ button {
     font-size: 23.3vw; /* ~88% of the viewport at the widest glyphs */
   }
 
-  /* Bigger avatar: 80vw across the shoulders, bottom flush with the
-     stage, head in front of the lower half of the wordmark. */
+  /* Fit the artwork inside the stage instead of cropping it: the box
+     spans the screen, `contain` keeps the whole character, and the
+     edge fade hides the artwork's own shoulder crop on narrow phones
+     where the box ends up wider than the image. */
   .avatar {
     position: absolute;
     top: calc(var(--hero-stage) * 0.21);
     right: 0;
     left: 0;
-    width: min(80vw, 34rem);
+    width: min(100vw, 34rem);
     height: calc(var(--hero-stage) * 0.79);
     margin: 0 auto;
     aspect-ratio: auto;
     transform-origin: bottom center;
-    -webkit-mask-image: none;
-    mask-image: none;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
   }
 
   /* Fade in only: a vertical rise would lift the shoulders off the
@@ -524,8 +526,8 @@ button {
   }
 
   .avatar img {
-    object-fit: cover;
-    object-position: 50% 0;
+    object-fit: contain;            /* was cover, which sliced the arms */
+    object-position: 50% 100%;      /* keep the shoulders on the stage edge */
     animation: none;
   }
 
