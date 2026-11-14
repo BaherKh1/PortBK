@@ -709,6 +709,180 @@ button {
   }
 }
 
+/* ---------- project workflow flow pill ---------- */
+/* One shared class for both cards. Only the colour variables change
+   on the dark card, so geometry and type stay identical. */
+.flow-pill {
+  --flow-outline: #0b1033;        /* outlined steps: border + text */
+  --flow-outcome-bg: #0b1033;     /* final step: solid fill */
+  --flow-outcome-text: var(--color-warm);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  max-width: 420px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  line-height: 1.35;
+  color: var(--flow-outline);
+}
+
+/* The ink card inverts the flow, otherwise navy shapes vanish into
+   the navy background. Same size, radius, spacing and stagger. */
+.flagship--ink .flow-pill {
+  --flow-outline: var(--color-text-inverse);
+  --flow-outcome-bg: var(--color-text-inverse);
+  --flow-outcome-text: var(--color-text);
+}
+
+.flow-pill__step {
+  position: relative;
+  top: 0;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  /* The caption spans both columns so a full sentence stays on one
+     line instead of wrapping in the narrow name column. */
+  grid-template-areas:
+    "num name"
+    "caption caption";
+  align-items: center;
+  column-gap: 16px;
+  row-gap: 6px;
+  padding: 20px 24px;
+  border: 2px solid var(--flow-outline);
+  border-radius: 20px;
+  background: transparent;
+  color: var(--flow-outline);
+  transition:
+    top 160ms var(--ease-out),
+    border-color 160ms var(--ease-out),
+    background-color 160ms var(--ease-out);
+}
+
+/* Final step: the only solid card, so the eye lands on the outcome. */
+.flow-pill__step--outcome {
+  background: var(--flow-outcome-bg);
+  border-color: var(--flow-outcome-bg);
+  color: var(--flow-outcome-text);
+}
+
+.flow-pill__num {
+  grid-area: num;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  font-size: var(--text-micro);   /* 13px */
+  font-weight: var(--weight-bold);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.flow-pill__name {
+  grid-area: name;
+  display: block;
+  font-size: clamp(1.375rem, 2.5vw, 1.625rem); /* 22-26px */
+  font-weight: var(--weight-bold);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+}
+
+.flow-pill__caption {
+  grid-area: caption;
+  display: block;
+  font-size: 0.875rem;            /* 14px, keeps the line unbroken */
+  line-height: 1.4;
+  opacity: 0.82;                  /* keeps >= 4.5:1 on both cards */
+  text-wrap: pretty;
+}
+
+/* 24px line + arrowhead, centred on the 36px number circles:
+   2px card border + 24px padding + 18px radius - 1px half-line. */
+.flow-pill__connector {
+  position: relative;
+  flex: none;
+  width: 2px;
+  height: 24px;
+  margin: 8px 0 8px 43px;
+  border-radius: 2px;
+  background: var(--flow-outline);
+}
+
+.flow-pill__connector::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid var(--flow-outline);
+}
+
+/* Desktop: fill the right column up to 420px, top-aligned with the title. */
+@media (min-width: 56rem) {
+  .flow-pill {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: start;
+    justify-self: start;
+  }
+}
+
+/* Mobile: below the copy, full content width, same vertical rhythm. */
+@media (max-width: 48rem) {
+  .flow-pill {
+    max-width: none;
+  }
+}
+
+/* Hover lift only where hover exists and motion is allowed. */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .flow-pill__step:hover {
+    top: -2px;
+  }
+}
+
+/* Stagger indices: 5 children; each connector rides with the step above. */
+.flow-pill > :nth-child(1) { --i: 0; }
+.flow-pill > :nth-child(2) { --i: 0; }
+.flow-pill > :nth-child(3) { --i: 1; }
+.flow-pill > :nth-child(4) { --i: 1; }
+.flow-pill > :nth-child(5) { --i: 2; }
+
+/* Entrance: fade up 12px, 100ms between steps. Hidden state only
+   exists under JS + motion, so content stays visible without JS or
+   with reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .js-motion [data-pop] .flow-pill__step,
+  .js-motion [data-pop] .flow-pill__connector {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+    transition:
+      opacity 360ms var(--ease-out)
+        calc(var(--pop-delay, 0ms) + 180ms + var(--i, 0) * 100ms),
+      transform 480ms var(--ease-out)
+        calc(var(--pop-delay, 0ms) + 180ms + var(--i, 0) * 100ms),
+      top 160ms var(--ease-out);
+  }
+
+  .js-motion [data-pop].is-visible .flow-pill__step,
+  .js-motion [data-pop].is-visible .flow-pill__connector {
+    opacity: 1;
+    transform: none;
+  }
+
+  .js-motion [data-pop].is-armed .flow-pill__step,
+  .js-motion [data-pop].is-armed .flow-pill__connector {
+    will-change: transform, opacity;
+  }
+}
+
 /* ---------- project card pop (scroll-triggered) ---------- */
 .flagship::after {
   content: "";

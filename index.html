@@ -104,7 +104,25 @@
           <p>Connected Jenkins test execution to n8n and Gemini to summarize failure logs, suggest root-cause context, and create Jira tickets with clear reproduction details and execution artifacts.</p>
           <p>Tools: Jenkins · n8n · Gemini API · Jira · REST APIs</p>
         </div>
-        <figure class="flagship-shot"><p>Test execution → failure analysis → Jira issue</p></figure>
+        <ol class="flow-pill" aria-label="Workflow steps">
+          <li class="flow-pill__step">
+            <span class="flow-pill__num" aria-hidden="true">01</span>
+            <span class="flow-pill__name">Test execution</span>
+            <span class="flow-pill__caption">Jenkins runs the suite</span>
+          </li>
+          <li class="flow-pill__connector" aria-hidden="true"></li>
+          <li class="flow-pill__step">
+            <span class="flow-pill__num" aria-hidden="true">02</span>
+            <span class="flow-pill__name">Failure analysis</span>
+            <span class="flow-pill__caption">Gemini summarizes logs and suggests root cause</span>
+          </li>
+          <li class="flow-pill__connector" aria-hidden="true"></li>
+          <li class="flow-pill__step flow-pill__step--outcome">
+            <span class="flow-pill__num" aria-hidden="true">03</span>
+            <span class="flow-pill__name">Jira issue</span>
+            <span class="flow-pill__caption">Ticket created with repro steps and artifacts</span>
+          </li>
+        </ol>
         <dl class="flagship-facts"><div><dt>Workflow</dt><dd>CI/CD</dd></div><div><dt>Automation</dt><dd>n8n</dd></div><div><dt>Tracking</dt><dd>Jira</dd></div></dl>
       </article>
       <article class="flagship flagship--ink" data-pop>
@@ -113,7 +131,25 @@
           <p>Designed a workflow application to manage document submission, review, approvals, and status tracking, with a full-stack implementation.</p>
           <p>Tools: NestJS · Java · React</p>
         </div>
-        <figure class="flagship-shot"><p>Submission → review → approval</p></figure>
+        <ol class="flow-pill" aria-label="Workflow steps">
+          <li class="flow-pill__step">
+            <span class="flow-pill__num" aria-hidden="true">01</span>
+            <span class="flow-pill__name">Submission</span>
+            <span class="flow-pill__caption">Upload the document</span>
+          </li>
+          <li class="flow-pill__connector" aria-hidden="true"></li>
+          <li class="flow-pill__step">
+            <span class="flow-pill__num" aria-hidden="true">02</span>
+            <span class="flow-pill__name">Review</span>
+            <span class="flow-pill__caption">Reviewer checks and comments</span>
+          </li>
+          <li class="flow-pill__connector" aria-hidden="true"></li>
+          <li class="flow-pill__step flow-pill__step--outcome">
+            <span class="flow-pill__num" aria-hidden="true">03</span>
+            <span class="flow-pill__name">Approval</span>
+            <span class="flow-pill__caption">Status updated to approved</span>
+          </li>
+        </ol>
         <dl class="flagship-facts"><div><dt>Stages</dt><dd>03</dd></div><div><dt>Frontend</dt><dd>React</dd></div><div><dt>Backend</dt><dd>NestJS</dd></div></dl>
       </article>
     </section>
